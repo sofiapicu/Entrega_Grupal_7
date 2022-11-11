@@ -73,15 +73,14 @@ btnGet1.addEventListener('click', () => {
     fetchUsers()
 })
 
-inputPostNombre.addEventListener('input', () => {
-    console.log('aaaaaa')
+inputPostNombre.addEventListener('change', () => {
     conditionNombre = !conditionNombre
-    btnPost.disable = !(conditionNombre & conditionApellido)
+    btnPost.disabled = !(conditionNombre & conditionApellido)
 })
 
 inputPostApellido.addEventListener('change', () => {
     conditionApellido = !conditionApellido
-    btnPost.disable = !(conditionNombre & conditionApellido)
+    btnPost.disabled = !(conditionNombre & conditionApellido)
 })
 
 btnPost.addEventListener('click', () => {
