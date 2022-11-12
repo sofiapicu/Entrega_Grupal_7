@@ -22,7 +22,7 @@ const btnGet1 = document.getElementById("btnGet1");
 function showData(users) {
 
     let HtmlResultsToAdd = ''
-
+    
     if (!inputGet1Id.value) {          
         for (let user of users) {  
             HtmlResultsToAdd += `   
@@ -45,6 +45,7 @@ function showData(users) {
         <br>`
 
     }
+    inputGet1Id.value = '';
     results.innerHTML = HtmlResultsToAdd
 };
 
