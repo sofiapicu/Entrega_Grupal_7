@@ -1,5 +1,6 @@
 let conditionNombre = false
 let conditionApellido = false
+const alertError = document.getElementById('alertError')
 const btnGet1 = document.getElementById('btnGet1')
 const btnPost = document.getElementById('btnPost')
 const btnPut = document.getElementById('btnPut')
@@ -22,8 +23,31 @@ const fetchUsers = () => {
         .then((users) => showUsers(users))
         .catch((error) => {
             console.log(error);
+            alertError.classList.remove('d-none')
         });
 };
+
+const putUser = () => {
+    try {
+        fetch(urlMockapi + '/' + inputPutId.value)
+            .then(function (response) {                      // first then()
+                if (response.ok) {
+                    return response.text();
+                }
+
+                throw new Error('Something went wrong.');
+            })
+            .then(function (text) {                          // second then()
+
+
+            }).then((response) => response.json())
+            .then((user) => openModal(user))
+            .catch(function (error) {                        // catch
+                alert(error);
+                alertError.classList.remove('d-none')
+            });
+    }};
+
 
 // aquí creamos un nuevo usuario para agregar
 const getUser = () => ({
@@ -46,6 +70,7 @@ const sendUser = async () => {
         fetchUsers();
     } catch (error) {
         console.log(error);
+        alertError.classList.remove('d-none')
     }
 };
 
@@ -64,6 +89,7 @@ const changeUser = async (NAME, LASTNAME) => {
         fetchUsers();
     } catch (error) {
         console.log(error);
+        alertError.classList.remove('d-none')
     }
 };
 
@@ -129,18 +155,20 @@ btnPost.addEventListener('click', () => {
 })
 
 btnPut.addEventListener('click', () => {
-    fetch(urlMockapi + '/' + inputPutId.value)
-        .then((response) => response.json())
-        .then((user) => openModal(user))
-        .catch((error) => {
-            console.log(error);
-        });
+    putUser()
 })
 
 btnDelete.addEventListener('click', () => {
-    fetch(urlMockapi + '/' + id, {
+    fetch(urlMockapi + '/' + inputDelete.value, {
         method: 'DELETE',
     })
+        .then((response) => response.json())
+        .then(res => fetchUsers())
+        .catch((error) => {
+            console.log('e');
+            alertError.classList.remove('d-none')
+        });
+
 })
 
 function openModal(user) {
@@ -152,3 +180,9 @@ function openModal(user) {
 btnSavePut.addEventListener('click', () => {
     changeUser(inputPutNombre.value, inputPutApellido.value)
 })
+
+document.addEventListener("mouseup", function (event) {
+    if (!alertError.contains(event.target)) {
+        alertError.classList.add("d-none");
+    }
+});
