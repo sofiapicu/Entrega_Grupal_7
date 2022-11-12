@@ -30,8 +30,10 @@
                     <div class="col-md-6">
                         <div class="border p-3 my-3 position-relative" id="post-box">
                             <h6>Ingresar nuevo registro</h6>
-                            <input type="text" id="inputPostNombre" class="form-control my-1" placeholder="Nombre">
-                            <input type="text" id="inputPostApellido" class="form-control my-1" placeholder="Apellido">
+                            <input type="text" id="inputPostNombre" class="form-control my-1" placeholder="Nombre"
+                                oninput="checkInputPost()">
+                            <input type="text" id="inputPostApellido" class="form-control my-1" placeholder="Apellido"
+                                oninput="checkInputPost()">
                             <button id="btnPost" class="btn btn-success position-absolute bottom-0 mb-3" disabled>
                                 Agregar</button>
                         </div>
@@ -42,15 +44,17 @@
                         <div class="border p-3 my-3 position-relative" id="put-box">
                             <h6>Modificar registro</h6>
                             <input type="number" id="inputPutId" class="form-control"
-                                placeholder="ID del registro a modificar">
-                            <button id="btnPut" class="btn btn-warning position-absolute bottom-0 mb-3" disabled>
+                                placeholder="ID del registro a modificar" oninput="checkInputPutId()">
+                            <button id="btnPut" class="btn btn-warning position-absolute bottom-0 mb-3"
+                                data-bs-toggle="modal" data-bs-target="#putModal" disabled>
                                 Modificar</button>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="border p-3 my-3 position-relative" id="delete-box">
                             <h6>Eliminar registro</h6>
-                            <input type="number" id="inputDelete" class="form-control" placeholder="ID a eliminar">
+                            <input type="number" id="inputDelete" class="form-control" placeholder="ID a eliminar"
+                                oninput="checkInputDelete()">
                             <button id="btnDelete" class="btn btn-danger position-absolute bottom-0 mb-3" disabled>
                                 Borrar</button>
                         </div>
@@ -61,6 +65,25 @@
                 <ul class="border bg-dark text-white my-3 list-group list-group-flush" id="results"></ul>
             </div>
         </div>
+
+        <div class="modal fade" id="putModal" tabindex="-1" role="dialog" aria-labelledby="putModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <input type="text" id="inputPutNombre" class="form-control my-1" placeholder="Nombre">
+                        <input type="text" id="inputPutApellido" class="form-control my-1" placeholder="Apellido">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btnSavePut">Guardar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
     </main>
     <footer class="my-5 pt-5 text-muted text-center text-small">
         <p class="mb-1">Este sitio forma parte de <a href="https://jovenesaprogramar.edu.uy/" target="_blank">Jovenes a
@@ -87,6 +110,7 @@
         </div>
     </div>
     <script src="scripts/bootstrap.bundle.js"></script>
+    <script src="scripts/index.js"></script>
 </body>
 
 </html>
