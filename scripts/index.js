@@ -47,12 +47,6 @@ function showData(users) {
 
     }
     inputGet1Id.value = "";
-    inputPostNombre = "";
-    inputPostApellido = "";
-    inputPutId = "";
-    inputPutNombre = "";
-    inputPutApellido = "";
-    inputDelete = "";
 
     results.innerHTML = HtmlResultsToAdd
 };
