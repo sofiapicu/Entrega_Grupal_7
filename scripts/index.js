@@ -1,14 +1,15 @@
 
-/*
-document.addEventListener("mouseup", function (event) {
-    if (!alertError.contains(event.target)) {
-        alertError.classList.add("d-none");
-    }
-});
-*/
-
 // URL de la BASE DE DATOS y 
-const URL_Mockapi = 'https://63651843f711cb49d1f4f824.mockapi.io/users'
+const URL_Mockapi = "https://63651843f711cb49d1f4f824.mockapi.io/users"
+
+// Alerta
+
+const alertError = document.getElementById("alertError");
+const closeBtn = document.getElementById("closeBtn");
+
+closeBtn.addEventListener("click", () => {
+    alertError.hidden = true;
+});
 
 // GET - Empieza
 // Llamamos al campo (id) y el botón, y donde se van a imprimir los datos
@@ -21,7 +22,7 @@ const btnGet1 = document.getElementById("btnGet1");
 
 function showData(users) {
 
-    let HtmlResultsToAdd = ''
+    let HtmlResultsToAdd = ""
     
     if (!inputGet1Id.value) {          
         for (let user of users) {  
@@ -45,7 +46,7 @@ function showData(users) {
         <br>`
 
     }
-    inputGet1Id.value = '';
+    inputGet1Id.value = "";
     results.innerHTML = HtmlResultsToAdd
 };
 
@@ -56,20 +57,18 @@ const fetchGET = () => {
     .then(response => {
         if (response.ok) {
           return response.json();
-        }else{
-          throw Error(response.statusText); // Esto se puede usar después para la alerta
         }
     })
     .then((users) => showData(users))
     .catch((error) => {
         console.log(error);
-        //alertError.classList.remove('d-none') -- Ver después de que forma hacer la alerta
+        alertError.hidden = false;
     });      
 };
 
 // Agregar funcionalidad al botón del GET
 
-btnGet1.addEventListener('click', () => {
+btnGet1.addEventListener("click", () => {
     fetchGET();
 })
 
@@ -96,27 +95,25 @@ const makeUser = () => (
 const fetchPOST = () => {
     fetch(URL_Mockapi, {
         method: "POST",
-        headers: {"Content-Type": "application/json"}, // Es necesario este header aca ?
-        body: JSON.stringify(makeUser()),
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(makeUser())
     })
     .then(response => {
         if (response.ok) {
           return response.json();
-        }else{
-          throw Error(response.statusText); // Esto se puede usar después para la alerta
         }
     })
     .then((users) => fetchGET(users))
     .catch((error) => {
         console.log(error);
-        //alertError.classList.remove('d-none') -- Ver después de que forma hacer la alerta
+        alertError.hidden = false;
     });
 };
 
 // Habilitar el botón POST
 
 const btnPOSTCheck = () => {
-    if (inputPostNombre.value !== '' && inputPostApellido.value !== '') {
+    if (inputPostNombre.value !== "" && inputPostApellido.value !== "") {
         btnPost.disabled = false
     } else {
         btnPost.disabled = true
@@ -125,7 +122,7 @@ const btnPOSTCheck = () => {
 
 // Agregar funcionalidad al botón del POST
 
-btnPost.addEventListener('click', () => {
+btnPost.addEventListener("click", () => {
     fetchPOST();
 })
 
@@ -139,6 +136,7 @@ const inputPutNombre = document.getElementById("inputPutNombre");
 const inputPutApellido = document.getElementById("inputPutApellido");
 const btnPut = document.getElementById("btnPut");
 const btnSavePut = document.getElementById("btnSavePut");
+const btnCancelPut = document.getElementById("btnCancelPut");
 
 // Hacemos el FETCH con el método PUT
 
@@ -146,26 +144,26 @@ const fetchPUT = (NAME, LASTNAME) => {
     fetch(URL_Mockapi + "/" + inputPutId.value, {
         method: "PUT",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ 'name': NAME, 'lastname': LASTNAME }),
+        body: JSON.stringify({ "name": NAME, "lastname": LASTNAME }),
     })
     .then(response => {
         if (response.ok) {
           return response.json();
         }else{
-          throw Error(response.statusText); // Esto se puede usar después para la alerta
+          throw Error(response.statusText);
         }
     })
     .then((users) => fetchGET(users))
     .catch((error) => {
         console.log(error);
-        //alertError.classList.remove('d-none') -- Ver después de que forma hacer la alerta
+        alertError.hidden = false;
     });
 };
 
 // Habilitar el botón PUT
 
 const btnPUTCheck = () => {
-    if (inputPutId.value !== '') {
+    if (inputPutId.value !== "") {
         btnPut.disabled = false
     } else {
         btnPut.disabled = true
@@ -175,28 +173,34 @@ const btnPUTCheck = () => {
 // Agregar funcionalidad al botón del PUT y agregar las funciones del modal
 
 const openModal = (user) => {
-    document.getElementById('putModal').show
+    document.getElementById("putModal").classList.add("d-block")
     inputPutNombre.value = user.name
-    inputPutApellido.value = user.lastname
+    inputPutApellido.value = user.lastname 
 }
 
-btnSavePut.addEventListener('click', () => {
+btnSavePut.addEventListener("click", () => {
     fetchPUT(inputPutNombre.value, inputPutApellido.value)
+    document.getElementById("putModal").classList.remove("d-block")
 })
 
-btnPut.addEventListener('click', () => {
-    fetch(URL_Mockapi + '/' + inputPutId.value)
+btnCancelPut.addEventListener("click", () => {
+    document.getElementById("putModal").classList.remove("d-block")
+});
+
+btnPut.addEventListener("click", () => {
+    fetch(URL_Mockapi + "/" + inputPutId.value)
     .then(response => {
         if (response.ok) {
+            console.log(response.status)
           return response.json();
         }else{
-          throw Error(response.statusText); // Esto se puede usar después para la alerta
+          throw Error(response.statusText); 
         }
     })
     .then((users) => openModal(users))
     .catch((error) => {
         console.log(error);
-        //alertError.classList.remove('d-none') -- Ver después de que forma hacer la alerta
+        alertError.hidden = false;
     });
 })
 
@@ -211,25 +215,25 @@ const btnDelete = document.getElementById("btnDelete");
 // Hacemos el FETCH con el método DELETE
 
 const fetchDELETE = () => {
-    fetch(URL_Mockapi + '/' + inputDelete.value, {method: "DELETE"})
+    fetch(URL_Mockapi + "/" + inputDelete.value, {method: "DELETE"})
     .then(response => {
         if (response.ok) {
           return response.json();
         }else{
-          throw Error(response.statusText); // Esto se puede usar después para la alerta
+          throw Error(response.statusText);
         }
     })
     .then((users) => fetchGET(users))
     .catch((error) => {
         console.log(error);
-        //alertError.classList.remove('d-none') -- Ver después de que forma hacer la alerta
+        alertError.hidden = false;
     });
 };
 
 // Habilitar el botón DELETE
 
 const btnDELETECheck = () => {
-    if (inputDelete.value !== '') {
+    if (inputDelete.value !== "") {
         btnDelete.disabled = false
     } else {
         btnDelete.disabled = true
@@ -238,8 +242,9 @@ const btnDELETECheck = () => {
 
 // Agregar funcionalidad al botón del DELETE
 
-btnDelete.addEventListener('click', () => {
+btnDelete.addEventListener("click", () => {
     fetchDELETE();
 })
 
-// LIMPIAR LOS CAMPOS DESPUÉS DE APRETAR EL BOTÓN -- inputGet1Id.value = ''
+// DELETE - Termina
+// LIMPIAR LOS CAMPOS DESPUÉS DE APRETAR EL BOTÓN -- inputGet1Id.value = ""
