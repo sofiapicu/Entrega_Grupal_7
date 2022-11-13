@@ -248,4 +248,4 @@ btnDelete.addEventListener("click", () => {
 })
 
 // DELETE - Termina
-// LIMPIAR LOS CAMPOS DESPUÉS DE APRETAR EL BOTÓN -- inputGet1Id.value = ""
+// LIMPIAR LOS CAMPOS DESPUÉS DE APRETAR EL BOTÓN 
